@@ -1,0 +1,5 @@
+db.sqlite3
+.env
+.idea
+__pycache__/
+products/fixtures
