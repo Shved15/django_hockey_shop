@@ -8,6 +8,10 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=128, unique=True, help_text='Limit: 128 characters!')
     description = models.TextField(max_length=1024, null=True, blank=True, help_text='Limit: 1024 characters!')
 
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
         return self.name
 
@@ -20,6 +24,11 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products_images')
     category = models.ForeignKey(to=ProductCategory, on_delete=models.PROTECT)
+
+    # responsible for additional lines
+    class Meta:
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
 
     # good output in the admin panel
     def __str__(self):
@@ -37,7 +46,7 @@ class BagQuerySet(models.QuerySet):
         return sum(bag.quantity for bag in self)
 
 
-# create basket model
+# create bag model
 class Bag(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)

@@ -45,7 +45,7 @@
                         <li>
                             <a class="dropdown-item" href="{% url 'users:profile' %}">Profile</a>
                         </li>
-                        <li><a class="dropdown-item" href="orders/orders.html">Заказы</a></li>
+                        <li><a class="dropdown-item" href="orders/orders.html">Orders</a></li>
                         {% if user.is_superuser or user.is_staff %}
                         <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin panel</a></li>
                         {% endif %}
