@@ -9,8 +9,8 @@ class ProductCategory(models.Model):
     description = models.TextField(max_length=1024, null=True, blank=True, help_text='Limit: 1024 characters!')
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
 
     def __str__(self):
         return self.name
@@ -27,8 +27,8 @@ class Product(models.Model):
 
     # responsible for additional lines
     class Meta:
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = 'product'
+        verbose_name_plural = 'products'
 
     # good output in the admin panel
     def __str__(self):

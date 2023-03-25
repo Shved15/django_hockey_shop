@@ -17,7 +17,7 @@
                                 <input name="basketID" type="number" class="form-control"
                                        value="{{ bag.quantity }}" min="0">
                             </div>
-                            <div class="col-lg-4">{{ bag.sum }}</div>
+                            <div class="col-lg-4">{{ bag.sum }} $</div>
                             <div class="col-lg-4">
                                 <a href="{% url 'products:bag_remove' bag.id %}">
                                     <i class="fas fa-trash"></i>
