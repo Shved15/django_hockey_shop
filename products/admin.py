@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from products.models import Product, ProductCategory, Bag
-
+from products.models import Bag, Product, ProductCategory
 
 admin.site.register(ProductCategory)
 
@@ -10,8 +9,8 @@ admin.site.register(ProductCategory)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'quantity', 'category')
     fields = ('image', 'name', 'description', ('price', 'quantity'), 'category')
-    search_fields = ('name', )
-    ordering = ('name', )
+    search_fields = ('name',)
+    ordering = ('name',)
 
 
 # we can use a TabularInline if there is a FOREIGN KEY link

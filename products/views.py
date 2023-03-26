@@ -1,26 +1,24 @@
-from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
-from products.models import ProductCategory, Product, Bag
+from common.views import CommonMixin
+from products.models import Bag, Product, ProductCategory
 
 
 # create controller-class for main page
-class IndexView(TemplateView):
+class IndexView(CommonMixin, TemplateView):
     template_name = 'products/index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(IndexView, self).get_context_data()
-        context['title'] = 'Hockey Shop'
-        return context
+    title = 'Hockey - Shop'
 
 
 # create controller-class for catalog page
-class ProductsListView(ListView):
+class ProductsListView(CommonMixin, ListView):
     model = Product
     template_name = 'products/products.html'
     paginate_by = 3
+    title = 'Shop - Catalog'
 
     def get_queryset(self):
         queryset = super(ProductsListView, self).get_queryset()
@@ -29,7 +27,6 @@ class ProductsListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductsListView, self).get_context_data()
-        context['title'] = 'Shop - Catalog'
         context['categories'] = ProductCategory.objects.all()
         return context
 
