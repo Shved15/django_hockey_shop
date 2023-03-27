@@ -8,7 +8,7 @@ from products.models import Product, ProductCategory
 
 class IndexViewTestCase(TestCase):
 
-    def test_view(self):
+    def test_index_view(self):
         path = reverse('index')
         response = self.client.get(path)
 
@@ -27,12 +27,6 @@ class ProductsListViewTestCase(TestCase):
         path = reverse('products:index')
         response = self.client.get(path)
 
-        # print(response.context_data['object_list'])
-        # print(products[:3])
-        # print(list(response.context_data['object_list']) == list(products[:3]))
-        # self.assertEqual(response.status_code, HTTPStatus.OK)
-        # self.assertEqual(response.context_data['title'], 'Shop - Catalog')
-        # self.assertTemplateUsed(response, 'products/products.html')
         self._common_tests(response)
         self.assertEqual(list(response.context_data['object_list']), list(self.products[:3]))
 
@@ -45,6 +39,22 @@ class ProductsListViewTestCase(TestCase):
         self.assertEqual(
             list(response.context_data['object_list']),
             list(self.products.filter(category_id=category.id))
+        )
+
+    def test_pagination(self):
+        path1 = reverse('products:paginator', kwargs={'page': 1})
+        path2 = reverse('products:paginator', kwargs={'page': 2})
+        response1 = self.client.get(path1)
+        response2 = self.client.get(path2)
+        self._common_tests(response1)
+        self._common_tests(response2)
+        self.assertEqual(
+            list(response1.context_data['object_list']),
+            list(self.products[:3])
+        )
+        self.assertEqual(
+            list(response2.context_data['object_list']),
+            list(self.products[3:])
         )
 
     def _common_tests(self, response):
