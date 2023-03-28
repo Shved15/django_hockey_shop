@@ -1,0 +1,38 @@
+{% extends 'products/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<section>
+    <div class="container pt-5">
+        <div class="text-center mt-5">
+            <h1>Orders</h1>
+            <div class="orders mt-5">
+                <table class="table">
+                    <thead>
+                    <tr class="table-light">
+                        <th scope="col">#</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Created</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in object_list %}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{ order.get_state_display }}</td>
+                        <td>{{ order.created|naturaltime }}</td>
+                        <td>{{ order.bag_history.total_sum|intcomma }} $</td>
+                        <td>
+                            <a href="{% url 'orders:order' order.id %}">view</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
