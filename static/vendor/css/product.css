@@ -1,0 +1,17 @@
+.card {
+    padding: 7em;
+}
+
+.card img {
+    margin-left: -100px;
+}
+
+.card-body {
+    margin-left: 150px;
+}
+
+.btn {
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 1);
+    padding: 0.5em;
+}

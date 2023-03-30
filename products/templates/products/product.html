@@ -1,0 +1,31 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'vendor/css/product.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div class="container my-5">
+    <div class="card mb-3" style="width: 100%; height: 700px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ product.image.url }}" width="500" height="500" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text">{{ product.price }} $</p>
+                    <div class="card-footer text-center">
+                        <a class="btn btn-outline-success" href="{% url 'products:bag_add' product.id %}">
+                            Send to bag
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

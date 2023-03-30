@@ -8,6 +8,23 @@ from django.utils.timezone import now
 from users.models import EmailVerification, User
 
 
+class UserLoginViewTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username='user1', password='Password.1')
+        self.data = {
+            'username': 'user1',
+            'password': 'Password.1',
+        }
+        self.path = reverse('users:login')
+
+    def test_user_login_get(self):
+        response = self.client.get(self.path)
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertEqual(response.context_data['title'], 'Shop - Authorization')
+        self.assertTemplateUsed(response, 'users/login.html')
+
+
 class UserRegistrationViewTestCase(TestCase):
 
     def setUp(self):
