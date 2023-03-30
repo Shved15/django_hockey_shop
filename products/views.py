@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponseRedirect
+from django.views.generic import DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
@@ -29,6 +30,16 @@ class ProductsListView(CommonMixin, ListView):
         context = super(ProductsListView, self).get_context_data()
         context['categories'] = ProductCategory.objects.all()
         context['category_id'] = self.kwargs.get('category_id')
+        return context
+
+
+class ProductDetailView(CommonMixin, DetailView):
+    model = Product
+    template_name = 'products/product.html'
+    title = 'Shop - Product card'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
         return context
 
 
