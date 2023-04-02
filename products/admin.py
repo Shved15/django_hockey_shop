@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Bag, Product, ProductCategory
+from products.models import Bag, Product, ProductCategory, Favorites
 
 admin.site.register(ProductCategory)
 
@@ -20,3 +20,8 @@ class BagAdmin(admin.TabularInline):
     readonly_fields = ('created_timestamp',)
     # in order not to display extra fields in the admin panel in the user's bag
     extra = 0
+
+
+class FavAdmin(admin.TabularInline):
+    model = Favorites
+    fields = ('product')

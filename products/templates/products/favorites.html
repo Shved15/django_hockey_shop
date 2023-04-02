@@ -1,0 +1,95 @@
+{% extends 'products/base.html' %}
+{% load static cache humanize %}
+
+{% block css %}
+<link href="{% static 'vendor/css/products.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+
+            <h1 class="my-4">Your favorite goods</h1>
+            <div class="list-group">
+                {% for category in categories %}
+                <a href="{% url 'products:fav_category' category.id %}" class="list-group-item">{{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+
+            <div class="row">
+                {% for favorite in object_list %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#">
+                            <img class="card-img-top"
+                                 src="{{ favorite.product.image.url }}"
+                                 alt="">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">{{ favorite.product.name }}</a>
+                            </h4>
+                            <h5>{{ favorite.product.price|intcomma }} $</h5>
+                            <p class="card-text">{{ favorite.product.description }}</p>
+                            <p class="card-fav">
+                                <a href="{% url 'products:fav_remove' favorite.id %}">
+                                    Remove from favorites
+                                </a>
+                            </p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="btn btn-success" href="#">
+                                Send to bag
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+                        <a class="page-link"
+                           href="{% if page_obj.has_previous %} {% url 'products:fav_paginator' page_obj.previous_page_number %} {% else %} # {% endif %}"
+                           tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    {% for page in paginator.page_range %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{% url 'products:fav_paginator' page %}">
+                            {{ page }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
+                        <a class="page-link"
+                           href="{% if page_obj.has_next %} {% url 'products:fav_paginator' page_obj.next_page_number %} {% else %} # {% endif %}">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+

@@ -105,3 +105,11 @@ class Bag(models.Model):
             'sum': float(self.sum()),
         }
         return bag_item
+
+
+class Favorites(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username}'s favorites products."
