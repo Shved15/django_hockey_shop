@@ -28,7 +28,7 @@ class ProductsListViewTestCase(TestCase):
         response = self.client.get(path)
 
         self._common_tests(response)
-        self.assertEqual(list(response.context_data['object_list']), list(self.products[:3]))
+        self.assertEqual(list(response.context_data['object_list']), list(self.products[:6]))
 
     def test_list_categories(self):
         category = ProductCategory.objects.first()
@@ -50,11 +50,11 @@ class ProductsListViewTestCase(TestCase):
         self._common_tests(response2)
         self.assertEqual(
             list(response1.context_data['object_list']),
-            list(self.products[:3])
+            list(self.products[:6])
         )
         self.assertEqual(
             list(response2.context_data['object_list']),
-            list(self.products[3:])
+            list(self.products[6:])
         )
 
     def _common_tests(self, response):
