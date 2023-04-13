@@ -105,8 +105,6 @@ def stripe_webhook_view(request):
         # Passed signature verification
     return HttpResponse(status=200)
 
-    return HttpResponse(status=200)
-
 
 def fulfill_order(session):
     order_id = int(session.metadata.order_id)
