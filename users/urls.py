@@ -2,10 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
+from products.views import FavListView
 from users.views import (EmailVerificationView, UserLoginView, UserProfileView,
                          UserRegistrationView)
-
-from products.views import FavListView
 
 app_name = 'users'
 
