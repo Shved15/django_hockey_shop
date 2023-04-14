@@ -1,0 +1,84 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block css %}
+<link href="{% static 'vendor/css/products.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="container mt-4">
+        {% if not object_list %}
+            <h1 class="text-center">There are no matches for your "{{ request.GET.query }}" search.</h1>
+        {% else %}
+            <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+          <h1>Search results: {{ request.GET.query }}</h1>
+
+            <div class="row">
+                {% for product in object_list %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'products:product' product.id %}">
+                            <img class="card-img-top"
+                                 src="{{ product.image.url }}"
+                                 alt="">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{% url 'products:product' product.id %}">{{ product.name }}</a>
+                            </h4>
+                            <h5>{{ product.price }} $</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-fav">
+                                <a href="{% url 'products:fav_add' product.id %}">
+                                    Add to favorite
+                                </a>
+                            </p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="btn btn-success" href="{% url 'products:bag_add' product.id %}">
+                                Send to bag
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+                        <a class="page-link"
+                           href="{% if page_obj.has_previous %} {% url 'products:search_paginator' page_obj.previous_page_number %} {% else %} # {% endif %}"
+                           tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    {% for page in paginator.page_range %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{% url 'products:search_paginator' page %}">
+                            {{ page }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
+                        <a class="page-link"
+                           href="{% if page_obj.has_next %} {% url 'products:search_paginator' page_obj.next_page_number %} {% else %} # {% endif %}">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+

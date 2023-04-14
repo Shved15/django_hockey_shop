@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import HttpResponseRedirect, render
-from django.views.generic import DetailView, CreateView
+from django.db.models import Q
+from django.shortcuts import HttpResponseRedirect
+from django.views.generic import DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
 from common.views import CommonMixin
-from products.models import Bag, Product, ProductCategory, Favorites
+from products.models import Bag, Favorites, Product, ProductCategory
 
 
 # create controller-class for main page
@@ -24,13 +25,35 @@ class ProductsListView(CommonMixin, ListView):
     def get_queryset(self):
         queryset = super(ProductsListView, self).get_queryset()
         category_id = self.kwargs.get('category_id')
-        return queryset.filter(category_id=category_id) if category_id else queryset
+        return queryset.filter(category_id=category_id).order_by('name') \
+            if category_id else queryset.order_by('name')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductsListView, self).get_context_data()
         context['categories'] = ProductCategory.objects.all()
         context['category_id'] = self.kwargs.get('category_id')
         return context
+
+
+# controller for searching items in navbar by name and description
+class ProductSearchView(CommonMixin, ListView):
+    model = Product
+    template_name = 'products/search_products_by_name.html'
+    paginate_by = 6
+    title = 'Shop - Catalog'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('query')
+        if query is not None and query.strip():
+            queryset = queryset.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)
+            )
+        else:
+            # if the query is not set, then return an empty QuerySet
+            queryset = queryset.none()
+        print(queryset)
+        return queryset.order_by('name')
 
 
 class ProductDetailView(CommonMixin, DetailView):

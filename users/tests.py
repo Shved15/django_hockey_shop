@@ -1,11 +1,11 @@
-from datetime import timedelta
-from http import HTTPStatus
 import random
 import string
+from datetime import timedelta
+from http import HTTPStatus
+
 from django.contrib.auth import get_user_model
-from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
