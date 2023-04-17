@@ -69,15 +69,7 @@ class ProductDetailView(CommonMixin, DetailView):
 # controller-functions for add and remove in bag
 @login_required
 def bag_add(request, product_id):
-    product = Product.objects.get(id=product_id)
-    bags = Bag.objects.filter(user=request.user, product=product)
-
-    if not bags.exists():
-        Bag.objects.create(user=request.user, product=product, quantity=1)
-    else:
-        bag = bags.first()
-        bag.quantity += 1
-        bag.save()
+    Bag.create_or_update(product_id=product_id, user=request.user)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
