@@ -7,8 +7,8 @@ from users.models import User
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# A model to represent the product category.
 class ProductCategory(models.Model):
+    """A model to represent the product category."""
     name = models.CharField(max_length=128, unique=True, help_text='Limit: 128 characters!')
     description = models.TextField(max_length=1024, null=True, blank=True, help_text='Limit: 1024 characters!')
 
@@ -20,8 +20,8 @@ class ProductCategory(models.Model):
         return self.name
 
 
-# A model representing a product in the store.
 class Product(models.Model):
+    """A model representing a product in the store."""
     name = models.CharField(max_length=128, help_text='Limit: 128 characters')
     description = models.TextField(max_length=2048, help_text='Limit: 2048 characters!')
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -61,8 +61,9 @@ class Product(models.Model):
         return stripe_product_price
 
 
-# QuerySet model of Bag
 class BagQuerySet(models.QuerySet):
+    """QuerySet model of Bag"""
+
     # Calculate total price of all products in bag
     def total_sum(self):
         return sum(bag.sum() for bag in self)
@@ -83,8 +84,8 @@ class BagQuerySet(models.QuerySet):
         return line_items
 
 
-# bag model
 class Bag(models.Model):
+    """Bag model"""
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=0)
@@ -127,6 +128,7 @@ class Bag(models.Model):
 
 
 class Favorites(models.Model):
+    """Favorites model"""
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
 

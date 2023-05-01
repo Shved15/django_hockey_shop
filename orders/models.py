@@ -5,6 +5,7 @@ from users.models import User
 
 
 class Order(models.Model):
+    """Order model"""
     CREATED = 0
     PAID = 1
     ON_WAY = 2
