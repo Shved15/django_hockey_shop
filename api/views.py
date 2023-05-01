@@ -16,30 +16,20 @@ class ProductModelViewSet(ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_permissions(self):
-        """
-        Defines the permissions for each action.
-        The create, update, and delete actions require user authorization with administrator rights.
-        """
+        """Defines the permissions for each action."""
         if self.action in ('create', 'update', 'destroy'):
             self.permission_classes = (IsAdminUser,)
         return super(ProductModelViewSet, self).get_permissions()
 
 
 class BagModelViewSet(ModelViewSet):
-    """
-    The Django view for the Bag model.
-    Provides CRUD actions (create, read, update, delete), sets permissions and pagination settings.
-    """
     queryset = Bag.objects.all()
     serializer_class = BagSerializer
     permission_classes = (IsAuthenticated,)
     pagination_class = None
 
     def get_queryset(self):
-        """
-        Defines, which Bag objects are returned for this view.
-        Returns only the Bag objects associated with the current user.
-        """
+        """Defines, which Bag objects are returned for this view."""
         queryset = super(BagModelViewSet, self).get_queryset()
         return queryset.filter(user=self.request.user)
 

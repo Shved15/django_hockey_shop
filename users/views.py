@@ -10,15 +10,15 @@ from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from users.models import EmailVerification, User
 
 
-# create class-controller for authentication and authorization
 class UserLoginView(CommonMixin, LoginView):
+    """View for handling user login."""
     template_name = 'users/login.html'
     form_class = UserLoginForm
     title = 'Shop - Authorization'
 
 
-# class controller for creation new user
 class UserRegistrationView(CommonMixin, SuccessMessageMixin, CreateView):
+    """View for handling user registration."""
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/registration.html'
@@ -27,20 +27,20 @@ class UserRegistrationView(CommonMixin, SuccessMessageMixin, CreateView):
     title = 'Shop - Registration'
 
 
-# class controller for profile of user
 class UserProfileView(CommonMixin, UpdateView):
+    """View for handling user profile update."""
     model = User
     form_class = UserProfileForm
     template_name = 'users/profile.html'
     title = 'Shop - Profile'
 
-    # the same as 'HttpResponseRedirect(reverse('users:login'))', redirect to user's profile page
+    # Redirect to user's profile page after successful update
     def get_success_url(self):
         return reverse_lazy('users:profile', args=(self.object.id,))
 
 
-# class controller for email verification logic
 class EmailVerificationView(CommonMixin, TemplateView):
+    """View for handling email verification."""
     title = 'Store - Email confirmation'
     template_name = 'users/email_verification.html'
 
@@ -53,4 +53,5 @@ class EmailVerificationView(CommonMixin, TemplateView):
             user.save()
             return super(EmailVerificationView, self).get(request, *args, **kwargs)
         else:
+            # Redirect to home page if email verification fails or is expired
             return HttpResponseRedirect(reverse('index'))

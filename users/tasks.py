@@ -9,6 +9,7 @@ from users.models import EmailVerification, User
 
 @shared_task
 def send_email_verification(user_id):
+    """Shared task for sending email verification message to a given user."""
     user = User.objects.get(id=user_id)
     expiration = now() + timedelta(hours=48)
     message = EmailVerification.objects.create(code=uuid.uuid4(), user=user, expiration=expiration)

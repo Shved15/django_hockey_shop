@@ -6,15 +6,13 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 
-# create User model
 class User(AbstractUser):
     image = models.ImageField(upload_to='users_images', null=True, blank=True)
-    # the fields checks if the user has confirmed the mail
+    # the fields check if the user has confirmed the mail
     is_verified_email = models.BooleanField(default=False)
     email = models.EmailField(unique=True)
 
 
-# create class for email verification
 class EmailVerification(models.Model):
     # field for generating a unique identifier
     code = models.UUIDField(unique=True)

@@ -36,12 +36,12 @@ class Product(models.Model):
         verbose_name_plural = 'products'
 
     # Returns a string representation of the product.
-    def __str__(self) -> str:
+    def __str__(self):
         return f'Product: {self.name} || Category: {self.category.name}'
 
     # method of storing objects in the DB
     def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None) -> None:
+             update_fields=None):
         """Overrides the save method of the model."""
         # if stripe-id is not filled then create it
         if not self.stripe_product_price_id:
@@ -50,7 +50,7 @@ class Product(models.Model):
         super(Product, self).save(force_insert=False, force_update=False, using=None,
                                   update_fields=None)
 
-    def create_stripe_product_price(self) -> dict:
+    def create_stripe_product_price(self):
         """ Creates a product and its price in Stripe."""
         stripe_product = stripe.Product.create(name=self.name)
         stripe_product_price = stripe.Price.create(
@@ -64,15 +64,15 @@ class Product(models.Model):
 # QuerySet model of Bag
 class BagQuerySet(models.QuerySet):
     # Calculate total price of all products in bag
-    def total_sum(self) -> float:
+    def total_sum(self):
         return sum(bag.sum() for bag in self)
 
     # Calculate total quantity of all products in bag
-    def total_quantity(self) -> int:
+    def total_quantity(self):
         return sum(bag.quantity for bag in self)
 
     # Logic for creating line_items in order.views.OrderCreateView.post
-    def stripe_products(self) -> list:
+    def stripe_products(self):
         line_items = []
         for bag in self:
             item = {
@@ -93,13 +93,13 @@ class Bag(models.Model):
     # QuerySet object as manager
     objects = BagQuerySet().as_manager()
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f'Bag for {self.user.username} ||| Product for {self.product.name}'
 
-    def sum(self) -> float:
+    def sum(self):
         return self.product.price * self.quantity
 
-    def de_json(self) -> dict:
+    def de_json(self):
         """Return a dictionary representation of the Bag object that can be serialized to JSON."""
         bag_item = {
             'product_name': self.product.name,
@@ -110,7 +110,7 @@ class Bag(models.Model):
         return bag_item
 
     @classmethod
-    def create_or_update(cls, product_id, user) -> tuple:
+    def create_or_update(cls, product_id, user):
         """Create a new Bag object or update the quantity of an existing Bag object."""
         bags = Bag.objects.filter(user=user, product_id=product_id)
 

@@ -23,8 +23,8 @@ class BagSerializer(serializers.ModelSerializer):
         fields = ('id', 'product', 'quantity', 'sum', 'total_sum', 'total_quantity', 'created_timestamp')
         read_only_fields = ('created_timestamp',)
 
-    def get_total_sum(self, obj) -> float:
+    def get_total_sum(self, obj):
         return Bag.objects.filter(user_id=obj.user.id).total_sum()
 
-    def get_total_quantity(self, obj) -> int:
+    def get_total_quantity(self, obj):
         return Bag.objects.filter(user_id=obj.user.id).total_quantity()
