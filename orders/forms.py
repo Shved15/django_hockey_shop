@@ -4,6 +4,7 @@ from orders.models import Order
 
 
 class OrderForm(forms.ModelForm):
+    """Form for checkout"""
     first_name = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Name'
@@ -18,7 +19,7 @@ class OrderForm(forms.ModelForm):
     }))
     address = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Delivery addres'
+        'placeholder': 'Delivery address'
     }))
 
     class Meta:

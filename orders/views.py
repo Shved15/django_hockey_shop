@@ -15,19 +15,23 @@ from orders.forms import OrderForm
 from orders.models import Order
 from products.models import Bag
 
+# Assigning Stripe API key from settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class SuccessTemplateView(CommonMixin, TemplateView):
+    """A view to display the success page for an order."""
     template_name = 'orders/successfully.html'
     title = 'Shop - Thanks for your order!'
 
 
 class CanceledTemplateView(TemplateView):
+    """A view to display the canceled page for an order."""
     template_name = 'orders/canceled.html'
 
 
 class OrderListView(CommonMixin, ListView):
+    """A view to display a list of orders for the current user."""
     template_name = 'orders/orders.html'
     title = 'Store - Orders'
     queryset = Order.objects.all()
@@ -35,15 +39,18 @@ class OrderListView(CommonMixin, ListView):
 
     # method to display registered user's orders and not all databases
     def get_queryset(self):
+        """Retrieve the orders for the current user."""
         queryset = super(OrderListView, self).get_queryset()
         return queryset.filter(creator=self.request.user)
 
 
 class OrderDetailView(DetailView):
+    """Displays details of a specific order."""
     template_name = 'orders/order.html'
     model = Order
 
     def get_context_data(self, **kwargs):
+        """Returns the context data to be used when rendering the template."""
         context = super(OrderDetailView, self).get_context_data(**kwargs)
         # we cannot inherit from the CommonMixin because we need the actual order number
         context['title'] = f'Store - Order №{self.object.id}'
@@ -51,6 +58,7 @@ class OrderDetailView(DetailView):
 
 
 class OrderCreateView(CommonMixin, CreateView):
+    """Displays a form to create a new order and handles the creation of the order."""
     template_name = 'orders/order_create.html'
     form_class = OrderForm
     success_url = reverse_lazy('orders:order_create')
@@ -58,6 +66,7 @@ class OrderCreateView(CommonMixin, CreateView):
 
     # it works to create an object, accept all the data, validate the form, etc.
     def post(self, request, *args, **kwargs):
+        """Handles the POST request for creating a new order."""
         # make it so that the logic that creates the order object is executed
         super(OrderCreateView, self).post(request, *args, **kwargs)
         bags = Bag.objects.filter(user=self.request.user)
@@ -73,11 +82,12 @@ class OrderCreateView(CommonMixin, CreateView):
         return HttpResponseRedirect(checkout_session.url, status=HTTPStatus.SEE_OTHER)
 
     def form_valid(self, form):
+        """Sets the creator of the order to the current user."""
         form.instance.creator = self.request.user
         return super(OrderCreateView, self).form_valid(form)
 
 
-# from srtipe docs
+# from stripe docs
 @csrf_exempt
 def stripe_webhook_view(request):
     payload = request.body

@@ -7,6 +7,7 @@ from django.utils.timezone import now
 
 
 class User(AbstractUser):
+    """Custom User model with additional fields."""
     image = models.ImageField(upload_to='users_images', null=True, blank=True)
     # the fields check if the user has confirmed the mail
     is_verified_email = models.BooleanField(default=False)
@@ -14,6 +15,8 @@ class User(AbstractUser):
 
 
 class EmailVerification(models.Model):
+    """Model for storing email verification objects."""
+
     # field for generating a unique identifier
     code = models.UUIDField(unique=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -22,9 +25,12 @@ class EmailVerification(models.Model):
     expiration = models.DateTimeField()
 
     def __str__(self):
+        # Returns a string representation of the EmailVerification object
         return f'Email verification object for user - {self.user.username} | {self.user.email}'
 
     def send_verification_mail(self):
+        """Sends a verification email to the user."""
+
         link = reverse('users:email_verification', kwargs={'email': self.user.email, 'code': self.code})
         verification_link = f'{settings.DOMAIN_NAME}{link}'
         subject = f'{self.user.username} account verification'
@@ -40,6 +46,6 @@ class EmailVerification(models.Model):
             fail_silently=False,
         )
 
-    # check the validity of the verification link
     def is_expired(self):
+        """Checks the validity of the verification link."""
         return True if now() >= self.expiration else False
