@@ -12,12 +12,15 @@ urlpatterns = [
     path('page/<int:page>/', ProductsListView.as_view(), name='paginator'),
     path('product/<pk>/', ProductDetailView.as_view(), name='product'),
 
+    # search products by name or description
     path('search/', ProductSearchView.as_view(), name='search_results'),
     path('search/page/<int:page>', ProductSearchView.as_view(), name='search_paginator'),
 
+    # bag
     path('bags/add/<int:product_id>/', bag_add, name='bag_add'),
     path('bags/remove/<int:bag_id>/', bag_remove, name='bag_remove'),
 
+    # favorites
     path('fav/page/<int:page>/', FavListView.as_view(), name='fav_paginator'),
     path('fav/add/<int:product_id>/', fav_add, name='fav_add'),
     path('fav/remove/<int:favorite_id>/', fav_remove, name='fav_remove'),
