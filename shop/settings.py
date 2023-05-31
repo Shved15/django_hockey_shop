@@ -74,6 +74,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
+    # django-extensions
+    'django_extensions',
+
     # my apps
     'api',
     'orders',
