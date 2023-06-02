@@ -5,8 +5,7 @@
 
 ## About project:
 This is an e-commerce web application for online sales of hockey equipment. It features the ability to add products through 
-the admin panel, register as a buyer, register using a GitHub account, add products to the shopping cart, add products to favorites, 
-search for products by name or description, place orders for selected products, and make payments.
+the admin panel, register as a buyer, register using a GitHub account, sending email verification, add products to the shopping cart, add products to favorites, search for products by name or description, place orders for selected products, and make payments.
 
 ### Stack:
 - Python 
