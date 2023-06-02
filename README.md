@@ -26,8 +26,8 @@ All actions should be executed from the source directory of the project and only
 
 1. Firstly, create and activate a new virtual environment:
 ```bash
-python3.9 -m venv ../venv
-source ../venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 ```
 2. Install packages:
 ```bash
